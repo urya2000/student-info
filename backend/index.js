@@ -7,11 +7,13 @@ const app = express();
 const PORT = 8888;
 
 const userRouter = require("./router/UserRouter");
+const TaskRouter = require("./router/TaskRouter");
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use("/api", userRouter);
+app.use("/api", TaskRouter);
 
 mongoose
   .connect(

@@ -17,7 +17,7 @@ router.post(
 router.post("/verifyOtpAndRegister", userRegister.verifyOtpAndRegister);
 
 router.post("/login", userLogin.Login);
-router.get("/logout", userLogin.Logout);
+router.get("/logout/:id", userLogin.Logout);
 
 //forget password
 router.post("/password-reset", forgetPassword.forgotPassword);

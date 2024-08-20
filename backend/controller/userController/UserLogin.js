@@ -46,17 +46,28 @@ const Login = async (req, res) => {
 };
 
 //logout
-const Logout = (req, res) => {
+const Logout = async (req, res) => {
+  const { id } = req.params;
+
   try {
-    res
-      .status(200)
-      .cookie("token", "", {
-        httpOnly: true,
-        secure: true, 
-        sameSite: "strict",
-        expires: new Date(0),
-      })
-      .json({ success: true, message: "Logged out successfully" });
+    const user = await userModel.findById(id);
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(400).json({ message: "Token not found" });
+    }
+
+    // Clear the cookie
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
+
+    return res.status(200).json({ message: "Logout successful" });
   } catch (error) {
     console.error("Error in logout:", error);
     return res.status(500).json({ error: "Internal server error" });
